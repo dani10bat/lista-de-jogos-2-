@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jogos Mais Populares na Twitch</title>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Função para buscar e exibir os jogos mais populares na Twitch
+            function exibirJogosMaisPopulares() {
+                $.ajax({
+                    url: "https://api.twitch.tv/helix/games/top", // Endpoint para obter os jogos mais populares
+                    method: "GET",
+                    headers: {
+                        "Client-ID": "5qxb876dm4j6xgxcno2ipghf9x6mii" // Seu Client ID da Twitch API
+                    },
+                    success: function(response) {
+                        var jogos = response.data; // Array de jogos mais populares
+                        var listaJogos = $("#jogosPopulares");
+                        listaJogos.empty(); // Limpa a lista existente
+
+                        jogos.forEach(function(jogo) {
+                            var itemLista = $("<li>").text(jogo.name + " - Visualizações: " + jogo.viewer_count);
+                            listaJogos.append(itemLista);
+                        });
+                    },
+                    error: function() {
+                        console.log("Erro ao buscar os jogos mais populares.");
+                    }
+                });
+            }
+
+            exibirJogosMaisPopulares();
+        });
+    </script>
+</head>
+<body>
+    <h1>Jogos Mais Populares na Twitch</h1>
+    <ul id="jogosPopulares"></ul>
+</body>
+</html>
